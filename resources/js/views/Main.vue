@@ -1,4 +1,10 @@
 <template>
+	<div>
+		<div>
+			
+		</div>
+		<div></div>
+	</div>
 	
 </template>
 <script>
@@ -6,7 +12,7 @@
 		name: 'main',
 		data() {
 			return {
-				
+
 			}
 		}
 	}

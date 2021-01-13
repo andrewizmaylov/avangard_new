@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/weather', 'WeatherController@showWeather');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
