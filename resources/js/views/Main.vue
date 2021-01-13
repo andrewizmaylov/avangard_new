@@ -1,15 +1,14 @@
 <template>
 	<div>
-		<div>
-			
-		</div>
-		<div></div>
+		<orders></orders>
 	</div>
 	
 </template>
 <script>
+	import orders from './components/Orders.vue';
 	export default {
-		name: 'main',
+		name: 'mainapp',
+		components: {orders},
 		data() {
 			return {
 

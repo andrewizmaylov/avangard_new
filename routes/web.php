@@ -16,6 +16,9 @@ Route::get('/', function () {
 });
 
 Route::get('/weather', 'WeatherController@showWeather');
+Route::get('/api/orders', 'OrderController@index');
+Route::get('/api/orders10', 'OrderController@index10');
+Route::get('/api/order/{id}', 'OrderController@details');
 
 Auth::routes();
 

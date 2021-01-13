@@ -7,14 +7,14 @@
 
         <title>{{env('APP_NAME')}}</title>
 
-        <link rel="stylesheet" href="{{asset('css/app.css')}}">
+        <link rel="stylesheet" href="{{asset('css/main.css')}}">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
     </head>
     <body>
-        <div id="app">
-            <main></main>
+        <div id="app" class="container mx-auto">
+            <mainapp class="max-w-6xl"></mainapp>
         </div>
         <script src="{{asset('js/app.js')}}"></script>
     </body>
