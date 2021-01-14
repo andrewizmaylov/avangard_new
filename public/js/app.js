@@ -2099,6 +2099,73 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Weather.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Weather.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'weather',
+  data: function data() {
+    return {
+      result: null
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get('/weather').then(function (response) {
+      if (response.data.message == "ok") {
+        _this.result = response.data.result;
+      }
+
+      console.log(response);
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  },
+  computed: {
+    icon: function icon() {
+      return "https://yastatic.net/weather/i/icons/blueye/color/svg/" + this.result.fact.icon + ".svg";
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/components/Orders.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/components/Orders.vue?vue&type=script&lang=js& ***!
@@ -2319,7 +2386,7 @@ __webpack_require__.r(__webpack_exports__);
         params: {
           order: this.order
         }
-      });
+      }); // this.$router.push({path: '/edit/'+this.details.order.id});
     },
     partnerName: function partnerName() {
       return this.details.order.partner.name;
@@ -41600,118 +41667,78 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    { staticClass: "flex w-md flex-col rounded-lg shadow-lg overflow-hidden" },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "flex-1 bg-white p-6 flex justify-between" }, [
+        _c("div", { staticClass: "flex-1" }, [
+          _c("p", { staticClass: "text-sm font-medium text-indigo-600" }, [
+            _c("a", { staticClass: "hover:underline", attrs: { href: "#" } }, [
+              _vm._v(
+                "\n\t\t            " +
+                  _vm._s(this.result.geo_object.province.name) +
+                  ", " +
+                  _vm._s(this.result.geo_object.country.name) +
+                  "\n\t\t        "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("a", { staticClass: "block mt-2", attrs: { href: "#" } }, [
+            _c("p", { staticClass: "text-xl font-semibold text-gray-900" }, [
+              _vm._v(
+                "\n\t\t            " +
+                  _vm._s(this.result.geo_object.locality.name) +
+                  " " +
+                  _vm._s(this.result.fact.temp) +
+                  "\n\t\t        "
+              )
+            ]),
+            _vm._v(" "),
+            _c("p", { staticClass: "mt-3 text-base text-gray-500" }, [
+              _vm._v(
+                "\n\t\t            Fill like " +
+                  _vm._s(this.result.fact.feels_like) +
+                  "\n\t\t        "
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "mt-6 flex items-center" }, [
+          _c("div", { staticClass: "flex-shrink-0" }, [
+            _c("img", {
+              staticClass: "h-16 w-16 rounded-full",
+              attrs: { src: _vm.icon, alt: "" }
+            })
+          ])
+        ])
+      ])
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "flex w-md flex-col rounded-lg shadow-lg overflow-hidden"
-      },
-      [
-        _c("div", { staticClass: "flex-shrink-0" }, [
-          _c("img", {
-            staticClass: "h-48 w-full object-cover",
-            attrs: {
-              src:
-                "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80",
-              alt: ""
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "flex-1 bg-white p-6 flex flex-col justify-between" },
-          [
-            _c("div", { staticClass: "flex-1" }, [
-              _c("p", { staticClass: "text-sm font-medium text-indigo-600" }, [
-                _c(
-                  "a",
-                  { staticClass: "hover:underline", attrs: { href: "#" } },
-                  [_vm._v("\n\t\t            Article\n\t\t        ")]
-                )
-              ]),
-              _vm._v(" "),
-              _c("a", { staticClass: "block mt-2", attrs: { href: "#" } }, [
-                _c(
-                  "p",
-                  { staticClass: "text-xl font-semibold text-gray-900" },
-                  [
-                    _vm._v(
-                      "\n\t\t            Boost your conversion rate\n\t\t        "
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("p", { staticClass: "mt-3 text-base text-gray-500" }, [
-                  _vm._v(
-                    "\n\t\t            Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto accusantium praesentium eius, ut atque fuga culpa, similique sequi cum eos quis dolorum.\n\t\t        "
-                  )
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "mt-6 flex items-center" }, [
-              _c("div", { staticClass: "flex-shrink-0" }, [
-                _c("a", { attrs: { href: "#" } }, [
-                  _c("span", { staticClass: "sr-only" }, [
-                    _vm._v("Roel Aufderehar")
-                  ]),
-                  _vm._v(" "),
-                  _c("img", {
-                    staticClass: "h-10 w-10 rounded-full",
-                    attrs: {
-                      src:
-                        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-                      alt: ""
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "ml-3" }, [
-                _c("p", { staticClass: "text-sm font-medium text-gray-900" }, [
-                  _c(
-                    "a",
-                    { staticClass: "hover:underline", attrs: { href: "#" } },
-                    [
-                      _vm._v(
-                        "\n\t\t            \tRoel Aufderehar\n\t\t            "
-                      )
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "flex space-x-1 text-sm text-gray-500" },
-                  [
-                    _c("time", { attrs: { datetime: "2020-03-16" } }, [
-                      _vm._v(
-                        "\n\t\t            \tMar 16, 2020\n\t\t            "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { attrs: { "aria-hidden": "true" } }, [
-                      _vm._v("\n\t\t            \t·\n\t\t            ")
-                    ]),
-                    _vm._v(" "),
-                    _c("span", [
-                      _vm._v("\n\t\t          \t  6 min read\n\t\t            ")
-                    ])
-                  ]
-                )
-              ])
-            ])
-          ]
-        )
-      ]
-    )
+    return _c("div", { staticClass: "flex-shrink-0" }, [
+      _c("iframe", {
+        staticClass: "h-48 w-full object-cover",
+        staticStyle: { border: "0" },
+        attrs: {
+          src:
+            "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d28165.019339552047!2d34.35397163278829!3d53.23489008942226!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4132a78d14da3a05%3A0x6ad84109759a19a0!2z0JHRgNGP0L3RgdC6LCDQkdGA0Y_QvdGB0LrQsNGPINC-0LHQuy4!5e0!3m2!1sru!2sru!4v1610624532495!5m2!1sru!2sru",
+          frameborder: "0",
+          allowfullscreen: "",
+          "aria-hidden": "false",
+          tabindex: "0"
+        }
+      })
+    ])
   }
 ]
 render._withStripped = true
@@ -41737,7 +41764,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("section", [
     _c("span", { staticClass: "text-lg text-gray-600" }, [
-      _vm._v("Show orders page (limit 30)")
+      _vm._v("Show orders page (limit 70)")
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "flex flex-col rounded-lg shadow-lg my-6" }, [
@@ -57472,15 +57499,17 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Weather_vue_vue_type_template_id_22b0b225___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Weather.vue?vue&type=template&id=22b0b225& */ "./resources/js/views/Weather.vue?vue&type=template&id=22b0b225&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _Weather_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Weather.vue?vue&type=script&lang=js& */ "./resources/js/views/Weather.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
 
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
-  script,
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Weather_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _Weather_vue_vue_type_template_id_22b0b225___WEBPACK_IMPORTED_MODULE_0__["render"],
   _Weather_vue_vue_type_template_id_22b0b225___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
@@ -57494,6 +57523,20 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 if (false) { var api; }
 component.options.__file = "resources/js/views/Weather.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/Weather.vue?vue&type=script&lang=js&":
+/*!*****************************************************************!*\
+  !*** ./resources/js/views/Weather.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Weather_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Weather.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Weather.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Weather_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 

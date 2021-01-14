@@ -52,9 +52,9 @@
 							</tr>
 						</thead>
 	          			<tbody>
-	          				<tr v-for="product in markRows()" :class="product.position % 2 == 0 ? 'bg-gray-100' : 'bg-white'" :key="product.id" >
+	          				<tr v-for="product in details.orderDetails" :class="product.position % 2 == 0 ? 'bg-gray-100' : 'bg-white'" :key="product.id" >
 	          					<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-	          						{{productName(product.id)[0].name}}
+	          						{{productName(product.product_id)[0].name}}
 	          					</td>
 	          					<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
 	          						<input name="product.quantity" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="product.id" type="number" v-model="product.quantity">

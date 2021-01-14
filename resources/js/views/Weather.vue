@@ -1,50 +1,56 @@
 <template>
 	<div class="flex w-md flex-col rounded-lg shadow-lg overflow-hidden">
 	    <div class="flex-shrink-0">
-	        <img class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80" alt="">
+			<iframe class="h-48 w-full object-cover" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d28165.019339552047!2d34.35397163278829!3d53.23489008942226!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4132a78d14da3a05%3A0x6ad84109759a19a0!2z0JHRgNGP0L3RgdC6LCDQkdGA0Y_QvdGB0LrQsNGPINC-0LHQuy4!5e0!3m2!1sru!2sru!4v1610624532495!5m2!1sru!2sru" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
 	    </div>
-	    <div class="flex-1 bg-white p-6 flex flex-col justify-between">
+	    <div class="flex-1 bg-white p-6 flex justify-between">
 		    <div class="flex-1">
 		        <p class="text-sm font-medium text-indigo-600">
 			        <a href="#" class="hover:underline">
-			            Article
+			            {{this.result.geo_object.province.name}}, {{this.result.geo_object.country.name}}
 			        </a>
 		        </p>
 		        <a href="#" class="block mt-2">
 			        <p class="text-xl font-semibold text-gray-900">
-			            Boost your conversion rate
+			            {{this.result.geo_object.locality.name}} {{this.result.fact.temp}}
 			        </p>
 			        <p class="mt-3 text-base text-gray-500">
-			            Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto accusantium praesentium eius, ut atque fuga culpa, similique sequi cum eos quis dolorum.
+			            Fill like {{this.result.fact.feels_like}}
 			        </p>
 		        </a>
 		    </div>
 		    <div class="mt-6 flex items-center">
 		        <div class="flex-shrink-0">
-			        <a href="#">
-			            <span class="sr-only">Roel Aufderehar</span>
-			            <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-			        </a>
-		        </div>
-		        <div class="ml-3">
-			        <p class="text-sm font-medium text-gray-900">
-			            <a href="#" class="hover:underline">
-			            	Roel Aufderehar
-			            </a>
-			        </p>
-			        <div class="flex space-x-1 text-sm text-gray-500">
-			            <time datetime="2020-03-16">
-			            	Mar 16, 2020
-			            </time>
-			            <span aria-hidden="true">
-			            	&middot;
-			            </span>
-			            <span>
-			          	  6 min read
-			            </span>
-			        </div>
+		            <img class="h-16 w-16 rounded-full" :src="icon" alt="">
 		        </div>
 		    </div>
 	    </div>
 	</div>
 </template>
+<script>
+	export default {
+		name: 'weather',
+		data() {
+			return {
+				result: null,
+			}
+		},
+		created() {
+			axios.get('/weather')
+			    .then(response => {
+			    	if(response.data.message == "ok") {
+				    	this.result = response.data.result;
+			    	}
+			        console.log(response);
+			    })
+			    .catch(error => {
+			        console.log(error);
+			    });
+		},
+		computed: {
+			icon() {
+				return "https://yastatic.net/weather/i/icons/blueye/color/svg/"+this.result.fact.icon+".svg";
+			}
+		}
+	}
+</script>

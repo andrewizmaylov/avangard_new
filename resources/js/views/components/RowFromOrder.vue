@@ -40,6 +40,7 @@
 		methods: {
 			changeOrder() {
 				this.$router.push({name: 'editOrder', params: { order: this.order }});
+				// this.$router.push({path: '/edit/'+this.details.order.id});
 			},
 			partnerName() {
 				return this.details.order.partner.name;

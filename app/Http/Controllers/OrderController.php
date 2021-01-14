@@ -12,7 +12,7 @@ class OrderController extends Controller
 
     public function index()
     {
-    	return Order::take(30)->get();
+    	return Order::take(70)->get();
     }
 
     public function details($id)
@@ -41,19 +41,6 @@ class OrderController extends Controller
     	return response(['message' => 'update completed'], 200);
     }
 
-    public function loadMore($increment=30)
-    {
-    	// $start = static::$initialCount;
-    	// static::$initialCount+$increment;
-    	// dd($start, $start+30, static::$initialCount+$increment);
-    	return Order::whereBetween('id', [31, 60])->get();
-    }
-    public function loadLess()
-    {
-    	$end = $this->initialCount;
-    	$this->initialCount -=30;
-    	return Order::whereBetween('id', [$this->initialCount, $end])->get();
-    }
     public function sortBack()
     {
     	return Order::orderByDesc('delivery_dt')->get();

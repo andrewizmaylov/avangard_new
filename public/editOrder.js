@@ -428,7 +428,7 @@ var render = function() {
             _vm._v(" "),
             _c(
               "tbody",
-              _vm._l(_vm.markRows(), function(product) {
+              _vm._l(_vm.details.orderDetails, function(product) {
                 return _c(
                   "tr",
                   {
@@ -446,7 +446,9 @@ var render = function() {
                       [
                         _vm._v(
                           "\n          \t\t\t\t\t\t" +
-                            _vm._s(_vm.productName(product.id)[0].name) +
+                            _vm._s(
+                              _vm.productName(product.product_id)[0].name
+                            ) +
                             "\n          \t\t\t\t\t"
                         )
                       ]

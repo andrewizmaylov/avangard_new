@@ -9,13 +9,15 @@ class OrderProductsController extends Controller
 {
     public function update($id, Request $request)
     {
-    	// dd($id, $request->all());
+    	// dd($id, ($request->all())[2]["quantity"]);
     	foreach ($request->all() as $itemInOrder) {
+    		// dd($itemInOrder["quantity"]);
     		$row = OrderProduct::find($itemInOrder["id"]);
-    		$row->quantity = $itemInOrder["quantity"];
-    		$row->save();
+    		$row->update(["quantity" => $itemInOrder["quantity"]]);
+    		// dd(OrderProduct::find($itemInOrder["id"]));
+    		// $row->save();
 
-    		return response(['message' => 'record updated'], 200);
+    		// return response(['message' => 'record updated'], 200);
     	}
     }
 }

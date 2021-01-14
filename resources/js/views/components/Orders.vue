@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<span class="text-lg text-gray-600">Show orders page (limit 30)</span> 
+		<span class="text-lg text-gray-600">Show orders page (limit 70)</span> 
 
 		<div class="flex flex-col rounded-lg shadow-lg my-6">
 		    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
