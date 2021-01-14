@@ -1,4 +1,5 @@
 export const routes = [
-	// {path: '/', name: 'component_name', component: () => import(/* webpackChunkName: "component_name"*/ "./views/components/component_name.vue"), meta: {requiresAuth: false} },
+	{path: '/', name: 'orders', component: () => import(/* webpackChunkName: "orders"*/ "./views/components/Orders.vue"), meta: {requiresAuth: false} },
+	{path: '/edit', name: 'editOrder', component: () => import(/* webpackChunkName: "editOrder"*/ "./views/components/EditOrder.vue"), meta: {requiresAuth: false} },
 
 ]

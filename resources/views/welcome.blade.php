@@ -14,7 +14,7 @@
     </head>
     <body>
         <div id="app" class="container mx-auto">
-            <mainapp class="max-w-6xl"></mainapp>
+            <mainapp class="max-w-7xl mx-auto"></mainapp>
         </div>
         <script src="{{asset('js/app.js')}}"></script>
     </body>
