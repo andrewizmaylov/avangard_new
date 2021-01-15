@@ -17,7 +17,18 @@ class OrderProductsController extends Controller
     		// dd(OrderProduct::find($itemInOrder["id"]));
     		// $row->save();
 
-    		// return response(['message' => 'record updated'], 200);
     	}
+		return response(['message' => 'all record were updated'], 200);
+    }
+
+    public function addNewProduct(Request $request)
+    {
+    	OrderProduct::create([
+    		'order_id' => $request->order_id,
+    		'product_id' => $request->id,
+    		'price' => $request->price,
+    		'quantity' => $request->quantity,
+    	]);
+		return response(['message' => 'record was created'], 200);
     }
 }

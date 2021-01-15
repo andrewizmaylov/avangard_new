@@ -88,12 +88,63 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'editOrder',
   data: function data() {
     return {
       details: {},
-      products: []
+      products: [],
+      addNewItem: false,
+      newItem: {}
     };
   },
   created: function created() {
@@ -108,27 +159,52 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
-    saveOrder: function saveOrder() {
+    checkOrderCompleted: function checkOrderCompleted() {
+      if (this.details.order.status == 20) {
+        alert('This order is already delivered. You can not modified it any more');
+        return;
+      }
+
+      this.addNewItem = true;
+    },
+    addProduct: function addProduct() {
       var _this2 = this;
+
+      if (!this.newItem.quantity) {
+        alert('You have to provide item quantuty first');
+        return;
+      }
+
+      ;
+      var itemToAdd = this.newItem;
+      itemToAdd.order_id = this.details.order.id;
+      axios.post('/api/addNewProduct', itemToAdd).then(function (response) {
+        _this2.addNewItem = false;
+        _this2.newItem = {};
+
+        _this2.refreshOrder(); // console.log(response);
+
+      })["catch"](function (error) {
+        console.log(error);
+      });
+      this.addNewItem = false;
+      this.refreshOrder;
+    },
+    newItemPrice: function newItemPrice() {
+      if (!this.newItem) {
+        return null;
+      } else if (!this.newItem.quantity) {
+        return this.newItem.price;
+      } else {
+        return this.newItem.price * this.newItem.quantity;
+      }
+    },
+    saveOrder: function saveOrder() {
+      var _this3 = this;
 
       axios.post('/api/order/' + this.details.order.id, {
         client_email: this.details.order.client_email,
         status: this.details.order.status // id: this.details.order.id
-
-      }).then(function (response) {
-        _this2.refreshOrder();
-
-        console.log(response);
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    savePartner: function savePartner() {
-      var _this3 = this;
-
-      axios.post('/api/partner/' + this.details.order.partner.id, {
-        email: this.details.order.partner.email,
-        name: this.details.order.partner.name // id: this.details.order.id
 
       }).then(function (response) {
         _this3.refreshOrder();
@@ -138,11 +214,26 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    saveDetails: function saveDetails() {
+    savePartner: function savePartner() {
       var _this4 = this;
 
-      axios.post('/api/order_products/' + this.details.order.id, this.details.orderDetails).then(function (response) {
+      axios.post('/api/partner/' + this.details.order.partner.id, {
+        email: this.details.order.partner.email,
+        name: this.details.order.partner.name // id: this.details.order.id
+
+      }).then(function (response) {
         _this4.refreshOrder();
+
+        console.log(response);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    saveDetails: function saveDetails() {
+      var _this5 = this;
+
+      axios.post('/api/order_products/' + this.details.order.id, this.details.orderDetails).then(function (response) {
+        _this5.refreshOrder();
 
         console.log(response);
       })["catch"](function (error) {
@@ -168,11 +259,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     refreshOrder: function refreshOrder() {
-      var _this5 = this;
+      var _this6 = this;
 
       axios.get('/api/order/' + this.$route.params.order.id).then(function (response) {
         console.log('success');
-        _this5.details = response.data;
+        _this6.details = response.data;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -526,9 +617,225 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm._m(3)
+          _c("div", { staticClass: "flex mt-6" }, [
+            _c(
+              "button",
+              {
+                staticClass:
+                  "shadow bg-gray-100 hover:bg-indigo-600 hover:text-white focus:shadow-outline focus:outline-none text-gray-500 font-bold py-2 px-4 rounded",
+                attrs: { type: "submit" }
+              },
+              [_vm._v("Change Order Details")]
+            ),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                staticClass:
+                  "ml-auto shadow bg-gray-100 hover:bg-indigo-600 hover:text-white focus:shadow-outline focus:outline-none text-gray-500 font-bold py-2 px-4 rounded",
+                on: { click: _vm.checkOrderCompleted }
+              },
+              [_vm._v("Add more product to order")]
+            )
+          ])
         ]
-      )
+      ),
+      _vm._v(" "),
+      _vm.addNewItem
+        ? _c(
+            "form",
+            {
+              staticClass: "w-4/5 mx-auto mb-16",
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.addProduct($event)
+                }
+              }
+            },
+            [
+              _c(
+                "label",
+                { staticClass: "block text-2xl text-gray-600 mb-4 ml-2" },
+                [
+                  _vm._v(
+                    "Add new item for the order " + _vm._s(_vm.details.order.id)
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "table",
+                { staticClass: "min-w-full divide-y divide-gray-200" },
+                [
+                  _vm._m(3),
+                  _vm._v(" "),
+                  _c("tbody", [
+                    _c("tr", { staticClass: "bg-white" }, [
+                      _c(
+                        "td",
+                        {
+                          staticClass:
+                            "px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                        },
+                        [
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.newItem,
+                                  expression: "newItem"
+                                }
+                              ],
+                              staticClass:
+                                "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.newItem = $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                }
+                              }
+                            },
+                            _vm._l(_vm.products, function(product) {
+                              return _c(
+                                "option",
+                                { domProps: { value: product } },
+                                [_vm._v(_vm._s(product.name))]
+                              )
+                            }),
+                            0
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        {
+                          staticClass:
+                            "px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                        },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.newItem.quantity,
+                                expression: "newItem.quantity"
+                              }
+                            ],
+                            staticClass:
+                              "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
+                            attrs: {
+                              name: "product.quantity",
+                              id: "product.id",
+                              type: "number",
+                              placeholder: "enter quantuty..."
+                            },
+                            domProps: { value: _vm.newItem.quantity },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.newItem,
+                                  "quantity",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        {
+                          staticClass:
+                            "px-6 py-4 whitespace-nowrap text-sm text-gray-500",
+                          model: {
+                            value: _vm.newItem.price,
+                            callback: function($$v) {
+                              _vm.$set(_vm.newItem, "price", $$v)
+                            },
+                            expression: "newItem.price"
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n          \t\t\t\t\t\t" +
+                              _vm._s(_vm.newItem.price) +
+                              "\n          \t\t\t\t\t"
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        {
+                          staticClass:
+                            "px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                        },
+                        [
+                          _vm._v(
+                            "\n          \t\t\t\t\t\t" +
+                              _vm._s(_vm.newItemPrice()) +
+                              "\n          \t\t\t\t\t"
+                          )
+                        ]
+                      )
+                    ])
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex mt-6" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "shadow bg-gray-100 hover:bg-indigo-600 hover:text-white focus:shadow-outline focus:outline-none text-gray-500 font-bold py-2 px-4 rounded",
+                    attrs: { type: "submit" }
+                  },
+                  [
+                    _vm._v(
+                      "Add New Item to the order " +
+                        _vm._s(_vm.details.order.id)
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "span",
+                  {
+                    staticClass:
+                      "ml-6 shadow bg-gray-100 hover:bg-indigo-600 hover:text-white focus:shadow-outline focus:outline-none text-gray-500 font-bold py-2 px-4 rounded",
+                    on: {
+                      click: function($event) {
+                        _vm.addNewItem = false
+                      }
+                    }
+                  },
+                  [_vm._v("Add Cancel")]
+                )
+              ])
+            ]
+          )
+        : _vm._e()
     ])
   ])
 }
@@ -617,16 +924,48 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex mt-6" }, [
-      _c(
-        "button",
-        {
-          staticClass:
-            "shadow bg-gray-100 hover:bg-indigo-600 hover:text-white focus:shadow-outline focus:outline-none text-gray-500 font-bold py-2 px-4 rounded",
-          attrs: { type: "submit" }
-        },
-        [_vm._v("Change Order Details")]
-      )
+    return _c("thead", { staticClass: "bg-gray-100" }, [
+      _c("tr", [
+        _c(
+          "th",
+          {
+            staticClass:
+              "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center",
+            attrs: { scope: "col" }
+          },
+          [_c("span", [_vm._v("Product Name")])]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass:
+              "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+            attrs: { scope: "col" }
+          },
+          [_c("span", [_vm._v("Quantity")])]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass:
+              "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+            attrs: { scope: "col" }
+          },
+          [_c("span", [_vm._v("Price")])]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass:
+              "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+            attrs: { scope: "col" }
+          },
+          [_c("span", [_vm._v("Sum")])]
+        )
+      ])
     ])
   }
 ]
@@ -640,15 +979,14 @@ render._withStripped = true
 /*!*****************************************************!*\
   !*** ./resources/js/views/components/EditOrder.vue ***!
   \*****************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EditOrder_vue_vue_type_template_id_7a1c738a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EditOrder.vue?vue&type=template&id=7a1c738a& */ "./resources/js/views/components/EditOrder.vue?vue&type=template&id=7a1c738a&");
 /* harmony import */ var _EditOrder_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EditOrder.vue?vue&type=script&lang=js& */ "./resources/js/views/components/EditOrder.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _EditOrder_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _EditOrder_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -678,7 +1016,7 @@ component.options.__file = "resources/js/views/components/EditOrder.vue"
 /*!******************************************************************************!*\
   !*** ./resources/js/views/components/EditOrder.vue?vue&type=script&lang=js& ***!
   \******************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

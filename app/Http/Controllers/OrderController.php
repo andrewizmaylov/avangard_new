@@ -12,7 +12,7 @@ class OrderController extends Controller
 
     public function index()
     {
-    	return Order::take(70)->get();
+    	return Order::take(10)->get();
     }
 
     public function details($id)
