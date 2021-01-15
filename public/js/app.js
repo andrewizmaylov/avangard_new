@@ -41638,7 +41638,12 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "my-6" }, [_c("router-view")], 1)
+  return _c(
+    "div",
+    { staticClass: "my-6" },
+    [_c("weather", { staticClass: "mb-6" }), _vm._v(" "), _c("router-view")],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -41762,136 +41767,147 @@ var render = function() {
       _vm._v("Show orders page (limit 70)")
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "flex flex-col rounded-lg shadow-lg my-6" }, [
-      _c("div", { staticClass: "-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8" }, [
-        _c(
-          "div",
-          {
-            staticClass:
-              "py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
-          },
-          [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
-              },
-              [
-                _c(
-                  "table",
-                  { staticClass: "min-w-full divide-y divide-gray-200" },
-                  [
-                    _c("thead", { staticClass: "bg-gray-100" }, [
-                      _c("tr", [
-                        _vm._m(0),
-                        _vm._v(" "),
-                        _vm._m(1),
-                        _vm._v(" "),
-                        _vm._m(2),
-                        _vm._v(" "),
-                        _vm._m(3),
-                        _vm._v(" "),
-                        _c(
-                          "th",
-                          {
-                            staticClass:
-                              "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
-                            attrs: { scope: "col" }
-                          },
-                          [
-                            _c(
-                              "select",
-                              {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.list,
-                                    expression: "list"
+    _c(
+      "div",
+      {
+        staticClass:
+          "flex flex-col rounded-lg shadow-lg my-6 border border-gray-200"
+      },
+      [
+        _c("div", { staticClass: "-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8" }, [
+          _c(
+            "div",
+            {
+              staticClass:
+                "py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
+                },
+                [
+                  _c(
+                    "table",
+                    { staticClass: "min-w-full divide-y divide-gray-200" },
+                    [
+                      _c("thead", { staticClass: "bg-gray-100" }, [
+                        _c("tr", [
+                          _vm._m(0),
+                          _vm._v(" "),
+                          _vm._m(1),
+                          _vm._v(" "),
+                          _vm._m(2),
+                          _vm._v(" "),
+                          _vm._m(3),
+                          _vm._v(" "),
+                          _c(
+                            "th",
+                            {
+                              staticClass:
+                                "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+                              attrs: { scope: "col" }
+                            },
+                            [
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.list,
+                                      expression: "list"
+                                    }
+                                  ],
+                                  staticClass:
+                                    "mt-1 -ml-4 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md",
+                                  on: {
+                                    change: function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.list = $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    }
                                   }
-                                ],
-                                staticClass:
-                                  "mt-1 -ml-4 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md",
-                                on: {
-                                  change: function($event) {
-                                    var $$selectedVal = Array.prototype.filter
-                                      .call($event.target.options, function(o) {
-                                        return o.selected
-                                      })
-                                      .map(function(o) {
-                                        var val =
-                                          "_value" in o ? o._value : o.value
-                                        return val
-                                      })
-                                    _vm.list = $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  }
-                                }
-                              },
-                              [
-                                _c(
-                                  "option",
-                                  { domProps: { value: _vm.allOrders } },
-                                  [_vm._v("All orders")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "option",
-                                  { domProps: { value: _vm.delayedOrders } },
-                                  [_vm._v("Delayed orders")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "option",
-                                  { domProps: { value: _vm.completedOrders } },
-                                  [_vm._v("Completed orders")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "option",
-                                  {
-                                    attrs: { selected: "" },
-                                    domProps: { value: _vm.todayOrders }
-                                  },
-                                  [_vm._v("Today orders")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "option",
-                                  { domProps: { value: _vm.newOrders } },
-                                  [_vm._v("New orders")]
-                                )
-                              ]
-                            )
-                          ]
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "tbody",
-                      _vm._l(_vm.list, function(order) {
-                        return _c("orderrow", {
-                          key: order.id,
-                          class:
-                            order.position % 2 == 0
-                              ? "bg-gray-100"
-                              : "bg-white",
-                          attrs: { order: order }
-                        })
-                      }),
-                      1
-                    )
-                  ]
-                )
-              ]
-            )
-          ]
-        )
-      ])
-    ])
+                                },
+                                [
+                                  _c(
+                                    "option",
+                                    { domProps: { value: _vm.allOrders } },
+                                    [_vm._v("All orders")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "option",
+                                    { domProps: { value: _vm.delayedOrders } },
+                                    [_vm._v("Delayed orders")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "option",
+                                    {
+                                      domProps: { value: _vm.completedOrders }
+                                    },
+                                    [_vm._v("Completed orders")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "option",
+                                    {
+                                      attrs: { selected: "" },
+                                      domProps: { value: _vm.todayOrders }
+                                    },
+                                    [_vm._v("Today orders")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "option",
+                                    { domProps: { value: _vm.newOrders } },
+                                    [_vm._v("New orders")]
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.list, function(order) {
+                          return _c("orderrow", {
+                            key: order.id,
+                            class:
+                              order.position % 2 == 0
+                                ? "bg-gray-100"
+                                : "bg-white",
+                            attrs: { order: order }
+                          })
+                        }),
+                        1
+                      )
+                    ]
+                  )
+                ]
+              )
+            ]
+          )
+        ])
+      ]
+    )
   ])
 }
 var staticRenderFns = [

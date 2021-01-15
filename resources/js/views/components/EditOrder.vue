@@ -4,21 +4,36 @@
 			<span class="text-lg text-gray-600">Change order {{details.order.id}}</span>
 			<span @click="goOrdersPage" class="shadow bg-gray-100 hover:bg-indigo-600 hover:text-white focus:shadow-outline focus:outline-none text-gray-500 font-bold py-2 px-4 rounded">goBack</span> 
 		</div>
-		<div class="flex flex-col rounded-lg shadow-lg my-6">
-			<form class="w-4/5 mx-auto mb-16" @submit.prevent="saveOrder">
+		<div class="flex flex-col rounded-lg shadow-lg my-6 border border-gray-200">
+			<form class="w-4/5 mx-auto mt-6 mb-16" @submit.prevent="saveOrder">
 				<label class="block text-2xl text-gray-600 mb-4 ml-2">Change order details</label>
 				<label class="block tex-sm text-gray-600 mb-2 ml-2">Clients email</label>	
 				<input name="order.client_email" class="mb-6 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="order.client_email" type="email" v-model="details.order.client_email">
-				<label class="block tex-sm text-gray-600 mb-2 ml-2">Order status</label>	
+<!-- 				<label class="block tex-sm text-gray-600 mb-2 ml-2">Order status</label>	
 				<select name="order.status" class="mb-6 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="order.status" type="text" v-model="details.order.status">
 					<option :value="0">New order</option>
 					<option :value="10">Order Confirmed</option>
 					<option :value="20">Order Completed</option>
-				</select>
+				</select> -->
 				<div class="flex">
 					<button class="shadow bg-gray-100 hover:bg-indigo-600 hover:text-white focus:shadow-outline focus:outline-none text-gray-500 font-bold py-2 px-4 rounded" type="submit">Change Order</button>	
 				</div>
 			</form>
+
+			<div class="w-4/5 mx-auto mb-16" >
+				<label class="block text-2xl text-gray-600 mb-4 ml-2 text-center">Change order status</label>
+				<div class="flex justify-center">
+					<span class="cursor-pointer mx-2 shadow hover:bg-indigo-700 hover:text-white focus:shadow-outline focus:outline-none font-bold py-2 px-4 rounded" :class="details.order.status == 0 ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-500'" @click="markOrder(0)">
+						<span v-if="details.order.status !== 0">Mark order as a NEW</span><span v-else>This is a New Order</span>
+					</span>
+					<span class="cursor-pointer mx-2 shadow hover:bg-indigo-700 hover:text-white focus:shadow-outline focus:outline-none font-bold py-2 px-4 rounded" :class="details.order.status == 10 ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-500'" @click="markOrder(10)">
+						<span v-if="details.order.status !== 10">Mark order as a CONFIRMED</span><span v-else>This order was confirmed</span>
+					</span>
+					<span class="cursor-pointer mx-2 shadow hover:bg-indigo-700 hover:text-white focus:shadow-outline focus:outline-none font-bold py-2 px-4 rounded" :class="details.order.status == 20 ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-500'" @click="markOrder(20)">
+						<span v-if="details.order.status !== 20">Mark order as a COMPLETED</span><span v-else>This order is completed</span>
+					</span>
+				</div>
+			</div>
 
 			<form class="w-4/5 mx-auto mb-16" @submit.prevent="savePartner">
 				<label class="block text-2xl text-gray-600 mb-4 ml-2">Change Partner</label>
@@ -54,7 +69,7 @@
 							</tr>
 						</thead>
 	          			<tbody>
-	          				<tr v-for="product in details.orderDetails" :class="product.position % 2 == 0 ? 'bg-gray-100' : 'bg-white'" :key="product.id" >
+	          				<tr v-for="product in markRows()" :class="product.position % 2 == 0 ? 'bg-gray-100' : 'bg-white'" :key="product.id" >
 	          					<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
 	          						{{productName(product.product_id)[0].name}}
 	          					</td>
@@ -157,6 +172,12 @@
 			    });
 		},
 		methods: {
+			markOrder(status) {
+				let fieldsToChange = {
+			        status: status,					   
+				}
+				this.updateOrder(fieldsToChange)
+			},
 			deleteItem(item) {
 				if (this.details.order.status == 20) {
 					alert('This order is already delivered. You can not modified it any more');
@@ -172,7 +193,6 @@
 					    .catch(error => {
 					        console.log(error);
 					    });
-					 
 				}
 			},
 			clearNewItem() {
@@ -215,11 +235,17 @@
 				}
 			},
 			saveOrder() {
-				axios.post('/api/order/'+this.details.order.id, {
-				        client_email: this.details.order.client_email,
-				        status: this.details.order.status,
-				        // id: this.details.order.id
-				    })
+				let fieldsToChange = {
+			        client_email: this.details.order.client_email,
+			        // status: this.details.order.status,					   
+				}
+				this.updateOrder(fieldsToChange)
+			},
+			updateOrder(fieldsToChange) {
+				if (fieldsToChange.status == 20 && this.details.order.status !== 20) {
+					alert('Fire event about Order is Completed');
+				}
+				axios.post('/api/order/'+this.details.order.id, fieldsToChange)
 				    .then(response => {
 				    	this.refreshOrder();
 				        console.log(response);
@@ -227,9 +253,8 @@
 				    .catch(error => {
 				        console.log(error);
 				    });
-				 
 			},
-			savePartner() {
+ 			savePartner() {
 				axios.post('/api/partner/'+this.details.order.partner.id, {
 				        email: this.details.order.partner.email,
 				        name: this.details.order.partner.name,
