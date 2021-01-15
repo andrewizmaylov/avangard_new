@@ -5,7 +5,6 @@
 			<span @click="goOrdersPage" class="shadow bg-gray-100 hover:bg-indigo-600 hover:text-white focus:shadow-outline focus:outline-none text-gray-500 font-bold py-2 px-4 rounded">goBack</span> 
 		</div>
 		<div class="flex flex-col rounded-lg shadow-lg my-6">
-			
 			<form class="w-4/5 mx-auto mb-16" @submit.prevent="saveOrder">
 				<label class="block text-2xl text-gray-600 mb-4 ml-2">Change order details</label>
 				<label class="block tex-sm text-gray-600 mb-2 ml-2">Clients email</label>	
@@ -49,6 +48,9 @@
 								<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 									<span>Sum</span> 
 								</th>
+								<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+									<span class="mx-auto">Delete order</span> 
+								</th>
 							</tr>
 						</thead>
 	          			<tbody>
@@ -64,6 +66,13 @@
 	          					</td>
 	          					<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
 	          						{{product.quantity*product.price}}
+	          					</td>
+	          					<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+	          						<div class="cursor-pointer py-2" @click="deleteItem(product)">
+		          						<svg class="w-4 h-4 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+		          						  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+		          						</svg>
+	          						</div>
 	          					</td>
 	          				</tr>
 	          			</tbody>
@@ -100,7 +109,6 @@
 	          						<select v-model="newItem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
 	          							<option v-for="product in products" :value="product">{{product.name}}</option>
 	          						</select>
-	          						
 	          					</td>
 	          					<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
 	          						<input name="product.quantity" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="product.id" type="number" v-model="newItem.quantity" placeholder="enter quantuty...">
@@ -118,7 +126,7 @@
 
 				<div class="flex mt-6">
 					<button class="shadow bg-gray-100 hover:bg-indigo-600 hover:text-white focus:shadow-outline focus:outline-none text-gray-500 font-bold py-2 px-4 rounded" type="submit" >Add New Item to the order {{details.order.id}}</button>	
-					<span class="ml-6 shadow bg-gray-100 hover:bg-indigo-600 hover:text-white focus:shadow-outline focus:outline-none text-gray-500 font-bold py-2 px-4 rounded" @click="addNewItem=false">Add Cancel</span>	
+					<span class="ml-6 shadow bg-gray-100 hover:bg-indigo-600 hover:text-white focus:shadow-outline focus:outline-none text-gray-500 font-bold py-2 px-4 rounded" @click="clearNewItem">Add Cancel</span>	
 				</div>
 				
 			</form>	
@@ -149,6 +157,28 @@
 			    });
 		},
 		methods: {
+			deleteItem(item) {
+				if (this.details.order.status == 20) {
+					alert('This order is already delivered. You can not modified it any more');
+					return;
+				}
+				let deleteItem = confirm("You are aboute to delete " + this.productName(item.product_id)[0].name +" from the order");
+				if (deleteItem) {
+					axios.post('/api/deleteItem/'+item.id)
+					    .then(response => {
+					    	this.refreshOrder();
+					        console.log(response);
+					    })
+					    .catch(error => {
+					        console.log(error);
+					    });
+					 
+				}
+			},
+			clearNewItem() {
+				this.addNewItem = false;
+				this.newItem ={};
+			},
 			checkOrderCompleted() {
 				if (this.details.order.status == 20) {
 					alert('This order is already delivered. You can not modified it any more');
@@ -165,10 +195,8 @@
 				itemToAdd.order_id = this.details.order.id;
 				axios.post('/api/addNewProduct', itemToAdd)
 				    .then(response => {
-				    	this.addNewItem = false;
-				    	this.newItem = {};
+				    	this.clearNewItem();
 				    	this.refreshOrder();
-				        // console.log(response);
 				    })
 				    .catch(error => {
 				        console.log(error);

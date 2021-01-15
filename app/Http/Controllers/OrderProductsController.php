@@ -18,6 +18,7 @@ class OrderProductsController extends Controller
     		// $row->save();
 
     	}
+
 		return response(['message' => 'all record were updated'], 200);
     }
 
@@ -29,6 +30,12 @@ class OrderProductsController extends Controller
     		'price' => $request->price,
     		'quantity' => $request->quantity,
     	]);
+
 		return response(['message' => 'record was created'], 200);
+    }
+
+    public function deleteProduct($id)
+    {
+    	OrderProduct::find($id)->delete();
     }
 }

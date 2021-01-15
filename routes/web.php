@@ -28,6 +28,7 @@ Route::post('/api/order/{id}', 'OrderController@update');
 Route::post('/api/partner/{id}', 'PartnerController@update');
 Route::post('/api/order_products/{id}', 'OrderProductsController@update');
 Route::post('/api/addNewProduct', 'OrderProductsController@addNewProduct');
+Route::post('/api/deleteItem/{id}', 'OrderProductsController@deleteProduct');
 
 Auth::routes();
 

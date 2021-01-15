@@ -137,6 +137,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'editOrder',
   data: function data() {
@@ -159,6 +167,30 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
+    deleteItem: function deleteItem(item) {
+      var _this2 = this;
+
+      if (this.details.order.status == 20) {
+        alert('This order is already delivered. You can not modified it any more');
+        return;
+      }
+
+      var deleteItem = confirm("You are aboute to delete " + this.productName(item.product_id)[0].name + " from the order");
+
+      if (deleteItem) {
+        axios.post('/api/deleteItem/' + item.id).then(function (response) {
+          _this2.refreshOrder();
+
+          console.log(response);
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
+    },
+    clearNewItem: function clearNewItem() {
+      this.addNewItem = false;
+      this.newItem = {};
+    },
     checkOrderCompleted: function checkOrderCompleted() {
       if (this.details.order.status == 20) {
         alert('This order is already delivered. You can not modified it any more');
@@ -168,7 +200,7 @@ __webpack_require__.r(__webpack_exports__);
       this.addNewItem = true;
     },
     addProduct: function addProduct() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (!this.newItem.quantity) {
         alert('You have to provide item quantuty first');
@@ -179,11 +211,9 @@ __webpack_require__.r(__webpack_exports__);
       var itemToAdd = this.newItem;
       itemToAdd.order_id = this.details.order.id;
       axios.post('/api/addNewProduct', itemToAdd).then(function (response) {
-        _this2.addNewItem = false;
-        _this2.newItem = {};
+        _this3.clearNewItem();
 
-        _this2.refreshOrder(); // console.log(response);
-
+        _this3.refreshOrder();
       })["catch"](function (error) {
         console.log(error);
       });
@@ -200,26 +230,11 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     saveOrder: function saveOrder() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.post('/api/order/' + this.details.order.id, {
         client_email: this.details.order.client_email,
         status: this.details.order.status // id: this.details.order.id
-
-      }).then(function (response) {
-        _this3.refreshOrder();
-
-        console.log(response);
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    savePartner: function savePartner() {
-      var _this4 = this;
-
-      axios.post('/api/partner/' + this.details.order.partner.id, {
-        email: this.details.order.partner.email,
-        name: this.details.order.partner.name // id: this.details.order.id
 
       }).then(function (response) {
         _this4.refreshOrder();
@@ -229,11 +244,26 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    saveDetails: function saveDetails() {
+    savePartner: function savePartner() {
       var _this5 = this;
 
-      axios.post('/api/order_products/' + this.details.order.id, this.details.orderDetails).then(function (response) {
+      axios.post('/api/partner/' + this.details.order.partner.id, {
+        email: this.details.order.partner.email,
+        name: this.details.order.partner.name // id: this.details.order.id
+
+      }).then(function (response) {
         _this5.refreshOrder();
+
+        console.log(response);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    saveDetails: function saveDetails() {
+      var _this6 = this;
+
+      axios.post('/api/order_products/' + this.details.order.id, this.details.orderDetails).then(function (response) {
+        _this6.refreshOrder();
 
         console.log(response);
       })["catch"](function (error) {
@@ -259,11 +289,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     refreshOrder: function refreshOrder() {
-      var _this6 = this;
+      var _this7 = this;
 
       axios.get('/api/order/' + this.$route.params.order.id).then(function (response) {
         console.log('success');
-        _this6.details = response.data;
+        _this7.details = response.data;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -609,6 +639,52 @@ var render = function() {
                             "\n          \t\t\t\t\t"
                         )
                       ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      {
+                        staticClass:
+                          "px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "cursor-pointer py-2",
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteItem(product)
+                              }
+                            }
+                          },
+                          [
+                            _c(
+                              "svg",
+                              {
+                                staticClass: "w-4 h-4 mx-auto",
+                                attrs: {
+                                  xmlns: "http://www.w3.org/2000/svg",
+                                  fill: "none",
+                                  viewBox: "0 0 24 24",
+                                  stroke: "currentColor"
+                                }
+                              },
+                              [
+                                _c("path", {
+                                  attrs: {
+                                    "stroke-linecap": "round",
+                                    "stroke-linejoin": "round",
+                                    "stroke-width": "2",
+                                    d:
+                                      "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                  }
+                                })
+                              ]
+                            )
+                          ]
+                        )
+                      ]
                     )
                   ]
                 )
@@ -824,11 +900,7 @@ var render = function() {
                   {
                     staticClass:
                       "ml-6 shadow bg-gray-100 hover:bg-indigo-600 hover:text-white focus:shadow-outline focus:outline-none text-gray-500 font-bold py-2 px-4 rounded",
-                    on: {
-                      click: function($event) {
-                        _vm.addNewItem = false
-                      }
-                    }
+                    on: { click: _vm.clearNewItem }
                   },
                   [_vm._v("Add Cancel")]
                 )
@@ -916,6 +988,16 @@ var staticRenderFns = [
             attrs: { scope: "col" }
           },
           [_c("span", [_vm._v("Sum")])]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass:
+              "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+            attrs: { scope: "col" }
+          },
+          [_c("span", { staticClass: "mx-auto" }, [_vm._v("Delete order")])]
         )
       ])
     ])
