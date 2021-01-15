@@ -10,11 +10,18 @@ class OrderController extends Controller
 {
 	private static $initialCount = 0;
 
-    public function index()
+    public function index($amount=10)
     {
-    	return Order::take(10)->get();
+    	return Order::take($amount)->get();
     }
-
+    public function getAmount($amount)
+    {
+        // dd($amount);
+        if ($amount == "1000") {
+            return Order::all();
+        }
+        return $this->index($amount);
+    }
     public function details($id)
     {
     	$order = Order::find($id);

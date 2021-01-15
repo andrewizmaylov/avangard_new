@@ -270,6 +270,10 @@
 				 
 			},
 			saveDetails() {
+				if (this.details.order.status == 20) {
+					alert('This order is already delivered. You can not modified it any more');
+					return;
+				}
 				axios.post('/api/order_products/'+this.details.order.id, this.details.orderDetails)
 				    .then(response => {
 				    	this.refreshOrder();

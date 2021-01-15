@@ -1,7 +1,14 @@
 <template>
 	<section>
-		<span class="text-lg text-gray-600">Show orders page (limit 70)</span> 
-
+		<span class="text-lg text-gray-600">Show orders page (limit 
+			<select v-model="limit" class="outline-none" @change="getData()">
+				<option selected :value="10">10</option>
+				<option :value="50">50</option>
+				<option :value="70">70</option>
+				<option :value="100">100</option>
+				<option :value="1000">All</option>
+			</select> 
+		)</span>
 		<div class="flex flex-col rounded-lg shadow-lg my-6 border border-gray-200">
 		    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 		        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -52,6 +59,7 @@
 			return {
 				orders: [],
 				list: null,
+				limit: '10',
 			}
 		},
 		created() {
@@ -65,6 +73,7 @@
 			    });
 		},
 		computed: {
+
 			allOrders() {
 				var pos = 0;
 				return this.orders.filter(order => {
@@ -146,6 +155,17 @@
 			},
 		},
 		methods: {
+			getData() {
+				console.log(this.limit);
+				axios.get('/api/orders/'+this.limit)
+				    .then(response => {
+				        this.orders = response.data;
+				        this.list =  response.data;
+				    })
+				    .catch(error => {
+				        console.log(error);
+				    });
+			},
 			changeOrder(id) {
 				this.$router.push('/order'+id)
 			},

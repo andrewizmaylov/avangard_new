@@ -290,6 +290,11 @@ __webpack_require__.r(__webpack_exports__);
     saveDetails: function saveDetails() {
       var _this6 = this;
 
+      if (this.details.order.status == 20) {
+        alert('This order is already delivered. You can not modified it any more');
+        return;
+      }
+
       axios.post('/api/order_products/' + this.details.order.id, this.details.orderDetails).then(function (response) {
         _this6.refreshOrder();
 

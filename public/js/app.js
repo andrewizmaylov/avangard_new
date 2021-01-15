@@ -2220,6 +2220,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'orders',
@@ -2229,7 +2236,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       orders: [],
-      list: null
+      list: null,
+      limit: '10'
     };
   },
   created: function created() {
@@ -2324,6 +2332,17 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    getData: function getData() {
+      var _this2 = this;
+
+      console.log(this.limit);
+      axios.get('/api/orders/' + this.limit).then(function (response) {
+        _this2.orders = response.data;
+        _this2.list = response.data;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
     changeOrder: function changeOrder(id) {
       this.$router.push('/order' + id);
     }
@@ -41764,7 +41783,55 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("section", [
     _c("span", { staticClass: "text-lg text-gray-600" }, [
-      _vm._v("Show orders page (limit 70)")
+      _vm._v("Show orders page (limit \n\t\t"),
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.limit,
+              expression: "limit"
+            }
+          ],
+          staticClass: "outline-none",
+          on: {
+            change: [
+              function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.limit = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              },
+              function($event) {
+                return _vm.getData()
+              }
+            ]
+          }
+        },
+        [
+          _c("option", { attrs: { selected: "" }, domProps: { value: 10 } }, [
+            _vm._v("10")
+          ]),
+          _vm._v(" "),
+          _c("option", { domProps: { value: 50 } }, [_vm._v("50")]),
+          _vm._v(" "),
+          _c("option", { domProps: { value: 70 } }, [_vm._v("70")]),
+          _vm._v(" "),
+          _c("option", { domProps: { value: 100 } }, [_vm._v("100")]),
+          _vm._v(" "),
+          _c("option", { domProps: { value: 1000 } }, [_vm._v("All")])
+        ]
+      ),
+      _vm._v(" \n\t)")
     ]),
     _vm._v(" "),
     _c(
