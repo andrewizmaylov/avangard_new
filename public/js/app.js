@@ -2137,25 +2137,63 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'weather',
   data: function data() {
     return {
-      result: null
+      result: null,
+      showMessage: false
     };
   },
   created: function created() {
-    var _this = this;
+    this.loadWeather();
+  },
+  methods: {
+    loadWeather: function loadWeather() {
+      var _this = this;
 
-    axios.get('/weather').then(function (response) {
-      if (response.data.message == "ok") {
-        _this.result = response.data.result;
+      this.showMessage = false;
+      axios.get('/weather').then(function (response) {
+        if (response.data.message == "ok") {
+          _this.result = response.data.result;
+        }
+
+        console.log(response);
+      })["catch"](function (error) {
+        if (error.response.status == 500) {
+          _this.showMessage = true;
+        }
+
+        console.log(error);
+      });
+    },
+    moment: function (_moment) {
+      function moment() {
+        return _moment.apply(this, arguments);
       }
 
-      console.log(response);
-    })["catch"](function (error) {
-      console.log(error);
-    });
+      moment.toString = function () {
+        return _moment.toString();
+      };
+
+      return moment;
+    }(function () {
+      return moment().format("MM.DD");
+    })
   },
   computed: {
     icon: function icon() {
@@ -41692,50 +41730,96 @@ var render = function() {
     [
       _vm._m(0),
       _vm._v(" "),
-      _c("div", { staticClass: "flex-1 bg-white p-6 flex justify-between" }, [
-        _c("div", { staticClass: "flex-1" }, [
-          _c("p", { staticClass: "text-sm font-medium text-indigo-600" }, [
-            _c("a", { staticClass: "hover:underline", attrs: { href: "#" } }, [
-              _vm._v(
-                "\n\t\t            " +
-                  _vm._s(this.result.geo_object.province.name) +
-                  ", " +
-                  _vm._s(this.result.geo_object.country.name) +
-                  "\n\t\t        "
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("a", { staticClass: "block mt-2", attrs: { href: "#" } }, [
-            _c("p", { staticClass: "text-xl font-semibold text-gray-900" }, [
-              _vm._v(
-                "\n\t\t            " +
-                  _vm._s(this.result.geo_object.locality.name) +
-                  " " +
-                  _vm._s(this.result.fact.temp) +
-                  "\n\t\t        "
-              )
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "mt-3 text-base text-gray-500" }, [
-              _vm._v(
-                "\n\t\t            Fill like " +
-                  _vm._s(this.result.fact.feels_like) +
-                  "\n\t\t        "
-              )
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "mt-6 flex items-center" }, [
-          _c("div", { staticClass: "flex-shrink-0" }, [
-            _c("img", {
-              staticClass: "h-16 w-16 rounded-full",
-              attrs: { src: _vm.icon, alt: "" }
-            })
-          ])
-        ])
-      ])
+      _vm.result == null
+        ? _c(
+            "div",
+            {
+              staticClass:
+                "flex flex-col mx-auto mt-6 text-gray-600 text-center"
+            },
+            [
+              _c("p", [_vm._v("Важнее всего погода в Брянске...")]),
+              _vm._v(" "),
+              !_vm.showMessage
+                ? _c("img", {
+                    staticClass: "w-24 h-24 mx-auto",
+                    attrs: { src: "/image/isLoading.gif" }
+                  })
+                : _c(
+                    "span",
+                    {
+                      staticClass:
+                        "my-4 text-red-500 font-medium cursor-pointer",
+                      on: { click: _vm.loadWeather }
+                    },
+                    [
+                      _vm._v(
+                        "Click here to reload component. Some server errors happened"
+                      )
+                    ]
+                  )
+            ]
+          )
+        : _c(
+            "div",
+            { staticClass: "flex-1 bg-white p-6 flex justify-between" },
+            [
+              _c("div", { staticClass: "flex-1" }, [
+                _c(
+                  "p",
+                  { staticClass: "text-sm font-medium text-indigo-600" },
+                  [
+                    _c(
+                      "a",
+                      { staticClass: "hover:underline", attrs: { href: "#" } },
+                      [
+                        _vm._v(
+                          "\n\t\t\t            " +
+                            _vm._s(this.result.geo_object.province.name) +
+                            ", " +
+                            _vm._s(this.result.geo_object.country.name) +
+                            "\n\t\t\t        "
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("a", { staticClass: "block mt-2", attrs: { href: "#" } }, [
+                  _c(
+                    "p",
+                    { staticClass: "text-xl font-semibold text-gray-900" },
+                    [
+                      _vm._v(
+                        "\n\t\t\t            " +
+                          _vm._s(this.result.geo_object.locality.name) +
+                          " " +
+                          _vm._s(this.result.fact.temp) +
+                          "\n\t\t\t        "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "mt-3 text-base text-gray-500" }, [
+                    _vm._v(
+                      "\n\t\t\t            Fill like " +
+                        _vm._s(this.result.fact.feels_like) +
+                        "\n\t\t\t        "
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "mt-6 flex items-center" }, [
+                _c("div", { staticClass: "flex-shrink-0" }, [
+                  _c("img", {
+                    staticClass: "h-16 w-16 rounded-full",
+                    attrs: { src: _vm.icon, alt: "" }
+                  })
+                ])
+              ])
+            ]
+          )
     ]
   )
 }
