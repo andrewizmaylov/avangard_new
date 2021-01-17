@@ -1,6 +1,6 @@
 <template>
 	<div class="my-6">
-		<weather class="mb-6"></weather>
+		<!-- <weather class="mb-6"></weather> -->
 		<router-view></router-view>
 	</div>
 	

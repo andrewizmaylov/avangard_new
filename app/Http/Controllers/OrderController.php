@@ -10,7 +10,7 @@ class OrderController extends Controller
 {
 	private static $initialCount = 0;
 
-    public function index($amount=10)
+    public function index($amount=7)
     {
     	return Order::take($amount)->get();
     }

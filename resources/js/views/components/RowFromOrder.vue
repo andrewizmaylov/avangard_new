@@ -10,8 +10,9 @@
 			{{orderAmount()}}
 		</td>
 		<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-			<ul v-for="item in products()">
-				<li>{{item}}</li>
+			<ul v-for="item in details.order.products">
+				<!-- <li>{{item}}</li> -->
+				{{item.name}}
 			</ul>
 		</td>
 		<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -25,17 +26,23 @@
 		props: ['order'],
 		data() {
 			return {
-				details: {},
+				details: {
+					order: {
+						partner: {},
+						products: [],
+					},
+					orderDetails: [],
+				},
 			}
 		},
-		created() {
-			axios.get('/api/order/'+this.order.id)
-			    .then(response => {
-			        this.details = response.data;
-			    })
-			    .catch(error => {
-			        console.log(error);
-			    });
+
+		async created() {
+			try {
+				const response = await axios.get('/api/order/'+this.order.id);
+				this.details = response.data;
+			} catch (error) {
+		        console.log(error);
+			}
 		},
 		methods: {
 			changeOrder() {

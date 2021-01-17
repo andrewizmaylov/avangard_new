@@ -242,10 +242,8 @@ __webpack_require__.r(__webpack_exports__);
       this.refreshOrder;
     },
     newItemPrice: function newItemPrice() {
-      if (!this.newItem) {
+      if (!this.newItem || !this.newItem.quantity) {
         return null;
-      } else if (!this.newItem.quantity) {
-        return this.newItem.price;
       } else {
         return this.newItem.price * this.newItem.quantity;
       }
@@ -308,12 +306,6 @@ __webpack_require__.r(__webpack_exports__);
         if (product.id == id) {
           return product;
         }
-      });
-    },
-    markRows: function markRows() {
-      var position = 0;
-      return this.details.orderDetails.filter(function (item) {
-        return item.position = position += 1;
       });
     },
     goOrdersPage: function goOrdersPage() {
@@ -634,13 +626,12 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "tbody",
-                  _vm._l(_vm.markRows(), function(product) {
+                  _vm._l(_vm.details.orderDetails, function(product, index) {
                     return _c(
                       "tr",
                       {
                         key: product.id,
-                        class:
-                          product.position % 2 == 0 ? "bg-gray-100" : "bg-white"
+                        class: index % 2 == 0 ? "bg-white" : "bg-gray-100"
                       },
                       [
                         _c(
@@ -681,7 +672,8 @@ var render = function() {
                               attrs: {
                                 name: "product.quantity",
                                 id: "product.id",
-                                type: "number"
+                                type: "number",
+                                disabled: _vm.details.order.status == 20
                               },
                               domProps: { value: product.quantity },
                               on: {

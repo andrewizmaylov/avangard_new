@@ -69,12 +69,12 @@
 							</tr>
 						</thead>
 	          			<tbody>
-	          				<tr v-for="product in markRows()" :class="product.position % 2 == 0 ? 'bg-gray-100' : 'bg-white'" :key="product.id" >
+	          				<tr v-for="(product, index) in details.orderDetails" :class="index % 2 == 0 ? 'bg-white' : 'bg-gray-100'" :key="product.id" >
 	          					<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
 	          						{{productName(product.product_id)[0].name}}
 	          					</td>
 	          					<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-	          						<input name="product.quantity" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="product.id" type="number" v-model="product.quantity">
+	          						<input name="product.quantity" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="product.id" type="number" v-model="product.quantity" :disabled="details.order.status == 20">
 	          					</td>
 	          					<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
 	          						{{product.price}}
@@ -226,10 +226,8 @@
 				this.refreshOrder;
 			},
 			newItemPrice() {
-				if (!this.newItem) {
+				if (!this.newItem || !this.newItem.quantity) {
 					return null;
-				} else if (!this.newItem.quantity) {
-					return this.newItem.price;
 				} else {
 					return this.newItem.price*this.newItem.quantity;
 				}
@@ -290,12 +288,6 @@
 						return product;
 					}
 				})
-			},
-			markRows() {
-				let position = 0;
-				return this.details.orderDetails.filter(item => {
-					return item.position = position += 1;
-				});
 			},
 			goOrdersPage() {
 				this.$router.push({name: 'orders'});
