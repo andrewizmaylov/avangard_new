@@ -62,7 +62,7 @@
 				limit: '10',
 			}
 		},
-		created() {
+		mounted() {
 			axios.get('/api/orders')
 			    .then(response => {
 			        this.orders = response.data;

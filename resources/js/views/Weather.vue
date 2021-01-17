@@ -9,7 +9,7 @@
 	    	<span class="my-4 text-red-500 font-medium cursor-pointer" v-else @click="loadWeather">Click here to reload component. Some server errors happened</span>
 	    </div>
 	    <div class="flex-1 bg-white p-6 flex justify-between" v-else>
-		    <div class="flex-1">
+		    <div class="">
 		        <p class="text-sm font-medium text-indigo-600">
 			        <a href="#" class="hover:underline">
 			            {{this.result.geo_object.province.name}}, {{this.result.geo_object.country.name}}
@@ -24,21 +24,25 @@
 			        </p>
 		        </a>
 		    </div>
-<!-- 		    <div>
-		    	<span >Weather for a week</span>
-		    	<div class="flex">
-		    		<div class="flex flex-col text-center mx-4" v-for="item in result.forecasts">
-			    		<span class="text-gray-500 text-sm">{{item.date}}</span>
-			    		<span class="tect-lg font-bold text-gray-800">{{item.hours[12].temp}}</span>
-		    		</div>
-		    	</div>
-		    </div> -->
+
+	        <div class="mx-auto">
+	        	<p class="text-xl font-semibold text-gray-700 my-2 ml-16">Next week forecasts</p>
+	        	<div class="flex">
+	        		<div class="flex flex-col text-center mx-4" v-for="item in result.forecasts">
+	    	    		<span class="text-gray-500 text-sm">{{moment(item.date)}}</span>
+	    	    		<span class="text-lg font-bold text-gray-700">{{item.parts.day.temp_avg}}</span>
+	        		</div>
+	        	</div>
+	        </div>
+
 		    <div class="mt-6 flex items-center">
 		        <div class="flex-shrink-0">
 		            <img class="h-16 w-16 rounded-full" :src="icon" alt="">
 		        </div>
 		    </div>
 	    </div>
+
+	    <img class="mr-auto h-5 px-5 mb-4 cursor-pointer" src="/image/YandexLogo.svg" @click="loadYandex">
 	</div>
 </template>
 <script>
@@ -50,30 +54,28 @@
 				showMessage: false,
 			}
 		},
-		created() {
+		mounted() {
 			this.loadWeather();
 		},
 		methods: {
-			loadWeather() {
+			async loadWeather() {
 				this.showMessage = false;
-				axios.get('/weather')
-				    .then(response => {
-				    	if(response.data.message == "ok") {
-					    	this.result = response.data.result;
-				    	}
-				        console.log(response);
-				    })
-				    .catch(error => {
-				    	if (error.response.status == 500) {
-				    		this.showMessage = true;
-				    	}
-				        console.log(error);
-				    });
+				try {
+					const response = await axios.get('/weather');
+					this.result = response.data.result;
+				} catch (error) {
+					if (error.response.status >= 400) {
+						this.showMessage = true;
+					}
+				    console.log(error);
+				}
 			},
-			moment() {
-				return moment().format("MM.DD");
+			moment(date) {
+				return moment(date).format("ddd");
 			},
-
+			loadYandex() {
+				location.replace('https://yandex.ru/pogoda/saint-petersburg');
+			},
 		},
 		computed: {
 			icon() {
