@@ -15,6 +15,15 @@
 - `php artisan key:generate`
 - `php artisan migrate --seed`
 
+check .env
+    MAIL_DRIVER=smtp
+    MAIL_HOST=smtp.mailtrap.io
+    MAIL_PORT=2525
+    MAIL_USERNAME=bb61b4b2c54694
+    MAIL_PASSWORD=7b65ac56aa0662
+    MAIL_ENCRYPTION=tls
+
+
 - `npm run prod`
 - `php artisan serve`
 
