@@ -2396,7 +2396,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.end = parseInt(this.limit);
     },
     addLimit: function addLimit() {
-      console.log(this.list.length <= parseInt(this.end) + parseInt(this.limit));
       this.start = parseInt(this.start) + parseInt(this.limit);
       this.end = parseInt(this.end) + parseInt(this.limit);
     },

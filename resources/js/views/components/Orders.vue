@@ -101,7 +101,6 @@
 				this.end = parseInt(this.limit);
 			},
 			addLimit() {
-				console.log(this.list.length <= parseInt(this.end)+parseInt(this.limit));
 				this.start = parseInt(this.start) + parseInt(this.limit);
 				this.end = parseInt(this.end) + parseInt(this.limit);
 			},
