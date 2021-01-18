@@ -164,7 +164,12 @@ __webpack_require__.r(__webpack_exports__);
   name: 'editOrder',
   data: function data() {
     return {
-      details: {},
+      details: {
+        order: {
+          partner: {}
+        },
+        orderDetails: []
+      },
       products: [],
       addNewItem: false,
       newItem: {}
@@ -176,7 +181,6 @@ __webpack_require__.r(__webpack_exports__);
     this.refreshOrder();
     axios.get('/api/products').then(function (response) {
       _this.products = response.data;
-      console.log(response);
     })["catch"](function (error) {
       console.log(error);
     });
@@ -201,8 +205,6 @@ __webpack_require__.r(__webpack_exports__);
       if (deleteItem) {
         axios.post('/api/deleteItem/' + item.id).then(function (response) {
           _this2.refreshOrder();
-
-          console.log(response);
         })["catch"](function (error) {
           console.log(error);
         });
@@ -264,8 +266,6 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.post('/api/order/' + this.details.order.id, fieldsToChange).then(function (response) {
         _this4.refreshOrder();
-
-        console.log(response);
       })["catch"](function (error) {
         console.log(error);
       });
@@ -279,8 +279,6 @@ __webpack_require__.r(__webpack_exports__);
 
       }).then(function (response) {
         _this5.refreshOrder();
-
-        console.log(response);
       })["catch"](function (error) {
         console.log(error);
       });
@@ -295,8 +293,6 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.post('/api/order_products/' + this.details.order.id, this.details.orderDetails).then(function (response) {
         _this6.refreshOrder();
-
-        console.log(response);
       })["catch"](function (error) {
         console.log(error);
       });
@@ -317,7 +313,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this7 = this;
 
       axios.get('/api/order/' + this.$route.params.order.id).then(function (response) {
-        console.log('success');
         _this7.details = response.data;
       })["catch"](function (error) {
         console.log(error);

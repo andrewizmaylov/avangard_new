@@ -29,12 +29,13 @@
 										<span>Product name</span> 
 									</th>
 									<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-								    <select class="mt-1 -ml-4 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" v-model="list">
-									    <option :value="allOrders">All orders</option>
-<!-- 									    <option :value="delayedOrders">Delayed orders</option>
-									    <option :value="completedOrders">Completed orders</option>
-									    <option selected :value="todayOrders">Today orders</option>
-									    <option :value="newOrders">New orders</option> -->
+								    <select class="mt-1 -ml-4 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" 
+								    v-model="route" @change="fetchData()">
+									    <option selected :value="'allOrders'">All orders</option>
+									    <option :value="'delayedOrders'">Delayed orders</option>
+									    <option :value="'completedOrders'">Completed orders</option>
+									    <option selected :value="'todayOrders'">Today orders</option>
+									    <option :value="'newOrders'">New orders</option>
 								    </select>
 									</th>
 								</tr>
@@ -57,107 +58,17 @@
 		components: {orderrow},
 		data() {
 			return {
-				orders: [],
-				list: null,
+				list: [],
 				limit: '10',
+				route: 'allOrders',
 			}
 		},
-		async created() {
-			try {
-				const response = await axios.get('/api/orders');
-				this.orders = response.data;
-		        this.list =  response.data;
-			} catch (error) {
-			    console.log(error);
-			}
-		},
-
-		computed: {
-
-			allOrders() {
-				var pos = 0;
-				return this.orders.filter(order => {
-					if (order.id) {
-						order.position = ++pos;
-						return order;
-					}
-				});
-			},
-			// completedOrders() {
-			// 	let position = 0; 
-			// 	let startTime = moment(new Date()).format('YYYY-MM-DD 00:00:00');
-			// 	let now = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-			// 	// axios.get('/api/ordersSortBack')
-			// 	//     .then(response => {
-			// 	//         this.orders = response.data;
-			// 	//     })
-			// 	//     .catch(error => {
-			// 	//         console.log(error);
-			// 	//     });
-			// 	return this.orders.filter(order => {
-			// 		if (order.status == 20 && moment(order.delivery_dt).isBetween(startTime, now)) {
-			// 			order.position = ++position;
-			// 			return order;
-			// 		}
-			// 	});
-			// },
-			// delayedOrders() {
-			// 	let position = 0; 
-			// 	let now = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-			// 	// axios.get('/api/ordersSortBack')
-			// 	//     .then(response => {
-			// 	//         this.orders = response.data;
-			// 	//     })
-			// 	//     .catch(error => {
-			// 	//         console.log(error);
-			// 	//     });
-			// 	return this.orders.filter(order => {
-			// 		if (order.status == 10 && moment(order.delivery_dt).isBefore(now)) {
-			// 			order.position = ++position;
-			// 			return order;
-			// 		}
-			// 	});
-			// },
-			// todayOrders() {
-			// 	let position = 0; 
-			// 	let now = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-			// 	let plusDay = moment(now).add(1, 'days');
-			// 	// axios.get('/api/orders')
-			// 	//     .then(response => {
-			// 	//         this.orders = response.data;
-			// 	//     })
-			// 	//     .catch(error => {
-			// 	//         console.log(error);
-			// 	//     });
-			// 	return this.orders.filter(order => {
-			// 		if (order.status == 10 && moment(order.delivery_dt).isBetween(now, plusDay)) {
-			// 			order.position = ++position;
-			// 			return order;
-			// 		}
-			// 	});
-			// },
-			// newOrders() {
-			// 	let position = 0; 
-			// 	let now = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-			// 	// axios.get('/api/orders')
-			// 	//     .then(response => {
-			// 	//         this.orders = response.data;
-			// 	//     })
-			// 	//     .catch(error => {
-			// 	//         console.log(error);
-			// 	//     });
-			// 	return this.orders.filter(order => {
-			// 		if (order.status == 0 && moment(order.delivery_dt).isAfter(now)) {
-			// 			order.position = ++position;
-			// 			return order;
-			// 		}
-			// 	});
-			// },
+		created() {
+			this.fetchData();
 		},
 		methods: {
-			getData() {
-				console.log(this.limit);
-				axios.get('/api/orders/'+this.limit)
+			getData(route) {
+				axios.get('route')
 				    .then(response => {
 				        this.orders = response.data;
 				        this.list =  response.data;
@@ -166,6 +77,15 @@
 				        console.log(error);
 				    });
 			},
+			async fetchData() {
+				try {
+					const response = await axios.get('/api/'+this.route);
+					this.list = response.data;
+				} catch (error) {
+				    console.log(error);
+				}
+			},
+
 			changeOrder(id) {
 				this.$router.push('/order'+id)
 			},

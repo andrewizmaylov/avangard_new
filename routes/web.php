@@ -16,8 +16,20 @@ Route::get('/', function () {
 });
 
 Route::get('/weather', 'WeatherController@showWeather');
-Route::get('/api/orders', 'OrderController@index');
+
+Route::get('/api/allOrders', 'OrderController@getAmount');
 Route::get('/api/orders/{amount}', 'OrderController@getAmount');
+
+Route::get('/api/delayedOrders', 'OrderController@delayedOrders');
+Route::get('/api/notConfirmedOrders', 'OrderController@notConfirmedOrders');
+Route::get('/api/completedOrders', 'OrderController@completedOrders');
+Route::get('/api/newOrders', 'OrderController@newOrders');
+Route::get('/api/todayOrders', 'OrderController@todayOrders');
+
+
+
+
+
 Route::get('/api/ordersSortBack', 'OrderController@sortBack');
 Route::get('/api/ordersMore', 'OrderController@loadMore');
 Route::get('/api/ordersLess', 'OrderController@loadLess');

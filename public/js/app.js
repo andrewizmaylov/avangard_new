@@ -2320,6 +2320,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'orders',
@@ -2328,136 +2329,56 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
-      orders: [],
-      list: null,
-      limit: '10'
+      list: [],
+      limit: '10',
+      route: 'allOrders'
     };
   },
   created: function created() {
-    var _this = this;
-
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var response;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.prev = 0;
-              _context.next = 3;
-              return axios.get('/api/orders');
-
-            case 3:
-              response = _context.sent;
-              _this.orders = response.data;
-              _this.list = response.data;
-              _context.next = 11;
-              break;
-
-            case 8:
-              _context.prev = 8;
-              _context.t0 = _context["catch"](0);
-              console.log(_context.t0);
-
-            case 11:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee, null, [[0, 8]]);
-    }))();
-  },
-  computed: {
-    allOrders: function allOrders() {
-      var pos = 0;
-      return this.orders.filter(function (order) {
-        if (order.id) {
-          order.position = ++pos;
-          return order;
-        }
-      });
-    } // completedOrders() {
-    // 	let position = 0; 
-    // 	let startTime = moment(new Date()).format('YYYY-MM-DD 00:00:00');
-    // 	let now = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-    // 	// axios.get('/api/ordersSortBack')
-    // 	//     .then(response => {
-    // 	//         this.orders = response.data;
-    // 	//     })
-    // 	//     .catch(error => {
-    // 	//         console.log(error);
-    // 	//     });
-    // 	return this.orders.filter(order => {
-    // 		if (order.status == 20 && moment(order.delivery_dt).isBetween(startTime, now)) {
-    // 			order.position = ++position;
-    // 			return order;
-    // 		}
-    // 	});
-    // },
-    // delayedOrders() {
-    // 	let position = 0; 
-    // 	let now = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-    // 	// axios.get('/api/ordersSortBack')
-    // 	//     .then(response => {
-    // 	//         this.orders = response.data;
-    // 	//     })
-    // 	//     .catch(error => {
-    // 	//         console.log(error);
-    // 	//     });
-    // 	return this.orders.filter(order => {
-    // 		if (order.status == 10 && moment(order.delivery_dt).isBefore(now)) {
-    // 			order.position = ++position;
-    // 			return order;
-    // 		}
-    // 	});
-    // },
-    // todayOrders() {
-    // 	let position = 0; 
-    // 	let now = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-    // 	let plusDay = moment(now).add(1, 'days');
-    // 	// axios.get('/api/orders')
-    // 	//     .then(response => {
-    // 	//         this.orders = response.data;
-    // 	//     })
-    // 	//     .catch(error => {
-    // 	//         console.log(error);
-    // 	//     });
-    // 	return this.orders.filter(order => {
-    // 		if (order.status == 10 && moment(order.delivery_dt).isBetween(now, plusDay)) {
-    // 			order.position = ++position;
-    // 			return order;
-    // 		}
-    // 	});
-    // },
-    // newOrders() {
-    // 	let position = 0; 
-    // 	let now = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-    // 	// axios.get('/api/orders')
-    // 	//     .then(response => {
-    // 	//         this.orders = response.data;
-    // 	//     })
-    // 	//     .catch(error => {
-    // 	//         console.log(error);
-    // 	//     });
-    // 	return this.orders.filter(order => {
-    // 		if (order.status == 0 && moment(order.delivery_dt).isAfter(now)) {
-    // 			order.position = ++position;
-    // 			return order;
-    // 		}
-    // 	});
-    // },
-
+    this.fetchData();
   },
   methods: {
-    getData: function getData() {
-      var _this2 = this;
+    getData: function getData(route) {
+      var _this = this;
 
-      console.log(this.limit);
-      axios.get('/api/orders/' + this.limit).then(function (response) {
-        _this2.orders = response.data;
-        _this2.list = response.data;
+      axios.get('route').then(function (response) {
+        _this.orders = response.data;
+        _this.list = response.data;
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    fetchData: function fetchData() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return axios.get('/api/' + _this2.route);
+
+              case 3:
+                response = _context.sent;
+                _this2.list = response.data;
+                _context.next = 10;
+                break;
+
+              case 7:
+                _context.prev = 7;
+                _context.t0 = _context["catch"](0);
+                console.log(_context.t0);
+
+              case 10:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 7]]);
+      }))();
     },
     changeOrder: function changeOrder(id) {
       this.$router.push('/order' + id);
@@ -2484,7 +2405,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-//
 //
 //
 //
@@ -2559,7 +2479,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         params: {
           order: this.order
         }
-      }); // this.$router.push({path: '/edit/'+this.details.order.id});
+      });
     },
     partnerName: function partnerName() {
       return this.details.order.partner.name;
@@ -42777,7 +42697,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("section", [
     _c("span", { staticClass: "text-lg text-gray-600" }, [
-      _vm._v("Show orders page (limit \n\t\t\t"),
+      _vm._v("Show orders page (limit \n\t\t"),
       _c(
         "select",
         {
@@ -42825,7 +42745,7 @@ var render = function() {
           _c("option", { domProps: { value: 1000 } }, [_vm._v("All")])
         ]
       ),
-      _vm._v(" \n\t\t)")
+      _vm._v(" \n\t)")
     ]),
     _vm._v(" "),
     _c(
@@ -42879,36 +42799,71 @@ var render = function() {
                                     {
                                       name: "model",
                                       rawName: "v-model",
-                                      value: _vm.list,
-                                      expression: "list"
+                                      value: _vm.route,
+                                      expression: "route"
                                     }
                                   ],
                                   staticClass:
                                     "mt-1 -ml-4 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md",
                                   on: {
-                                    change: function($event) {
-                                      var $$selectedVal = Array.prototype.filter
-                                        .call($event.target.options, function(
-                                          o
-                                        ) {
-                                          return o.selected
-                                        })
-                                        .map(function(o) {
-                                          var val =
-                                            "_value" in o ? o._value : o.value
-                                          return val
-                                        })
-                                      _vm.list = $event.target.multiple
-                                        ? $$selectedVal
-                                        : $$selectedVal[0]
-                                    }
+                                    change: [
+                                      function($event) {
+                                        var $$selectedVal = Array.prototype.filter
+                                          .call($event.target.options, function(
+                                            o
+                                          ) {
+                                            return o.selected
+                                          })
+                                          .map(function(o) {
+                                            var val =
+                                              "_value" in o ? o._value : o.value
+                                            return val
+                                          })
+                                        _vm.route = $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      },
+                                      function($event) {
+                                        return _vm.fetchData()
+                                      }
+                                    ]
                                   }
                                 },
                                 [
                                   _c(
                                     "option",
-                                    { domProps: { value: _vm.allOrders } },
+                                    {
+                                      attrs: { selected: "" },
+                                      domProps: { value: "allOrders" }
+                                    },
                                     [_vm._v("All orders")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "option",
+                                    { domProps: { value: "delayedOrders" } },
+                                    [_vm._v("Delayed orders")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "option",
+                                    { domProps: { value: "completedOrders" } },
+                                    [_vm._v("Completed orders")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "option",
+                                    {
+                                      attrs: { selected: "" },
+                                      domProps: { value: "todayOrders" }
+                                    },
+                                    [_vm._v("Today orders")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "option",
+                                    { domProps: { value: "newOrders" } },
+                                    [_vm._v("New orders")]
                                   )
                                 ]
                               )

@@ -154,7 +154,12 @@
 		name: 'editOrder',
 		data() {
 			return {
-				details: {},
+				details: {
+					order: {
+						partner: {},
+					},
+					orderDetails: [],
+				},
 				products: [],
 				addNewItem: false,
 				newItem: {},
@@ -165,7 +170,6 @@
 			axios.get('/api/products')
 			    .then(response => {
 			    	this.products = response.data;
-			        console.log(response);
 			    })
 			    .catch(error => {
 			        console.log(error);
@@ -188,7 +192,6 @@
 					axios.post('/api/deleteItem/'+item.id)
 					    .then(response => {
 					    	this.refreshOrder();
-					        console.log(response);
 					    })
 					    .catch(error => {
 					        console.log(error);
@@ -246,7 +249,6 @@
 				axios.post('/api/order/'+this.details.order.id, fieldsToChange)
 				    .then(response => {
 				    	this.refreshOrder();
-				        console.log(response);
 				    })
 				    .catch(error => {
 				        console.log(error);
@@ -260,7 +262,6 @@
 				    })
 				    .then(response => {
 				    	this.refreshOrder();
-				        console.log(response);
 				    })
 				    .catch(error => {
 				        console.log(error);
@@ -275,7 +276,6 @@
 				axios.post('/api/order_products/'+this.details.order.id, this.details.orderDetails)
 				    .then(response => {
 				    	this.refreshOrder();
-				        console.log(response);
 				    })
 				    .catch(error => {
 				        console.log(error);
@@ -295,7 +295,6 @@
 			refreshOrder() {
 				axios.get('/api/order/'+this.$route.params.order.id)
 				    .then(response => {
-				    	console.log('success');
 				        this.details = response.data;
 				    })
 				    .catch(error => {

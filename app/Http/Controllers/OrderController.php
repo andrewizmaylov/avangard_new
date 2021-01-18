@@ -4,24 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use App\OrderProduct;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
 	private static $initialCount = 0;
 
-    public function index($amount=7)
+    public function index()
     {
-    	return Order::take($amount)->get();
+    	return Order::all();
     }
-    public function getAmount($amount)
+    public function getAmount($amount=100)
     {
         // dd($amount);
         if ($amount == "1000") {
-            return Order::all();
+            return $this->index();
         }
-        return $this->index($amount);
+        return Order::take($amount)->get();
     }
+
     public function details($id)
     {
     	$order = Order::find($id);
@@ -38,7 +41,6 @@ class OrderController extends Controller
 
     public function update($id, Request $request)
     {
-    	// dd($request->all());
     	$order = Order::find($id);
     	if(!$order) {
     		return response(['message' => 'update failed, server error'], 500);
@@ -48,8 +50,40 @@ class OrderController extends Controller
     	return response(['message' => 'update completed'], 200);
     }
 
-    public function sortBack()
+    public function delayedOrders()
     {
-    	return Order::orderByDesc('delivery_dt')->get();
+        $date = Carbon::now();
+
+        return $result = Order::where('status', '10')->where('delivery_dt', '<=', $date)->orderByDesc('delivery_dt')->get();
     }
+
+    public function notConfirmedOrders()
+    {
+        $date = Carbon::now();
+
+        return $result = Order::where('status', '0')->where('delivery_dt', '<=', $date)->orderByDesc('delivery_dt')->get();
+    }
+
+    public function completedOrders()
+    {
+        $date = Carbon::now();
+
+        return $result = Order::where('status', '20')->orderByDesc('delivery_dt')->get();
+    }
+
+    public function newOrders()
+    {
+        $date = Carbon::now();
+
+        return $result = Order::where('status', '0')->where('delivery_dt', '>', $date)->orderBy('delivery_dt')->get();
+    }
+
+    public function todayOrders()
+    {
+        $date = Carbon::now();
+        $next = Carbon::now()->addDay();
+
+        return $result = Order::whereBetween('delivery_dt', [$date, $next])->where('status', '10')->get();
+    }
+
 }

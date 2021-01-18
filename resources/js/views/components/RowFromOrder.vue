@@ -11,7 +11,6 @@
 		</td>
 		<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
 			<ul v-for="item in details.order.products">
-				<!-- <li>{{item}}</li> -->
 				{{item.name}}
 			</ul>
 		</td>
@@ -47,7 +46,6 @@
 		methods: {
 			changeOrder() {
 				this.$router.push({name: 'editOrder', params: { order: this.order }});
-				// this.$router.push({path: '/edit/'+this.details.order.id});
 			},
 			partnerName() {
 				return this.details.order.partner.name;
