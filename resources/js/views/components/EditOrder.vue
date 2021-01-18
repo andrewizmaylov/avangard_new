@@ -4,7 +4,7 @@
 			<span class="text-lg text-gray-600">Change order {{details.order.id}}</span>
 			<span @click="goOrdersPage" class="shadow bg-gray-100 hover:bg-indigo-600 hover:text-white focus:shadow-outline focus:outline-none text-gray-500 font-bold py-2 px-4 rounded">goBack</span> 
 		</div>
-		<div class="flex flex-col rounded-lg shadow-lg my-6 border border-gray-200">
+		<div class="flex flex-col rounded-lg shadow-lg my-6 border border-gray-200" v-if="!isLoading">
 			<form class="w-4/5 mx-auto mt-6 mb-16" @submit.prevent="saveOrder">
 				<label class="block text-2xl text-gray-600 mb-4 ml-2">Change order details</label>
 				<label class="block tex-sm text-gray-600 mb-2 ml-2">Clients email</label>	
@@ -147,6 +147,7 @@
 			</form>	
 			
 		</div>
+		<img src="/image/isLoading.gif" v-else class="mx-auto my-16">
 	</section>
 </template>
 <script>
@@ -163,6 +164,7 @@
 				products: [],
 				addNewItem: false,
 				newItem: {},
+				isLoading: false,
 			}
 		},
 		created() {
@@ -244,7 +246,22 @@
 			},
 			updateOrder(fieldsToChange) {
 				if (fieldsToChange.status == 20 && this.details.order.status !== 20) {
-					alert('Fire event about Order is Completed');
+					this.isLoading = true;
+					axios.get('/api/orderComplete/'+this.details.order.id)
+					    .then(response => {
+					    	if (response.status == 200) {
+								alert('Message about Order is Completed was sended to the all users from the order');
+					    	} 
+					    	this.isLoading = false;
+					    })
+					    .catch(error => {
+					    	if (error.response.status == 403) {
+								alert('To send a message about Order is Completed you have to check and setup .env file');
+					    	}
+					        console.log(error);
+					    	this.isLoading = false;
+					    });
+					 
 				}
 				axios.post('/api/order/'+this.details.order.id, fieldsToChange)
 				    .then(response => {

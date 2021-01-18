@@ -7,6 +7,8 @@ use App\OrderProduct;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Mail\OrderComplete;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -34,7 +36,7 @@ class OrderController extends Controller
 
     	$partner = $order->partner; // full info about a partner, include partner->name field for output
     	$products = $order->products; // return array of products as object
-    	$orderDetails = OrderProduct::where('order_id', $id)->get(); // return all ordered position
+    	$orderDetails = $order->details(); // return all ordered position
 		
 		return response(['order' => $order, 'orderDetails' => $orderDetails]);
     }
@@ -86,4 +88,19 @@ class OrderController extends Controller
         return $result = Order::whereBetween('delivery_dt', [$date, $next])->where('status', '10')->get();
     }
 
+    public function sendMail($id)
+    {
+        $order = Order::find($id);
+        $mailList = $order->createMailList();
+        if (env('MAIL_USERNAME') && env('MAIL_PASSWORD')) {
+            try {
+                Mail::to($mailList)->send(new OrderComplete($order));
+                return response(['message' => 'mail OK'], 200);
+            } catch (Exception $e) {
+            }
+
+        } else {
+            return response(['message' => 'Some key is missing. Check Mail configuration inside the .env file.'], 403);
+        }
+    }
 }
