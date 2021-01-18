@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Route::get('/weather', 'WeatherController@showWeather');
 
-Route::get('/api/allOrders', 'OrderController@getAmount');
+Route::get('/api/allOrders', 'OrderController@index');
 Route::get('/api/orders/{amount}', 'OrderController@getAmount');
 
 Route::get('/api/delayedOrders', 'OrderController@delayedOrders');

@@ -2321,6 +2321,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'orders',
@@ -2330,6 +2338,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       list: [],
+      start: 0,
+      end: 10,
       limit: '10',
       route: 'allOrders'
     };
@@ -2338,18 +2348,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.fetchData();
   },
   methods: {
-    getData: function getData(route) {
-      var _this = this;
-
-      axios.get('route').then(function (response) {
-        _this.orders = response.data;
-        _this.list = response.data;
-      })["catch"](function (error) {
-        console.log(error);
-      });
+    changeOrder: function changeOrder(id) {
+      this.$router.push('/order' + id);
     },
     fetchData: function fetchData() {
-      var _this2 = this;
+      var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
         var response;
@@ -2357,31 +2360,68 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.prev = 0;
-                _context.next = 3;
-                return axios.get('/api/' + _this2.route);
+                _this.start = 0;
+                _this.end = _this.limit;
+                _context.prev = 2;
+                _context.next = 5;
+                return axios.get('/api/' + _this.route);
 
-              case 3:
+              case 5:
                 response = _context.sent;
-                _this2.list = response.data;
-                _context.next = 10;
+                _this.list = response.data;
+                _context.next = 12;
                 break;
 
-              case 7:
-                _context.prev = 7;
-                _context.t0 = _context["catch"](0);
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context["catch"](2);
                 console.log(_context.t0);
 
-              case 10:
+              case 12:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 7]]);
+        }, _callee, null, [[2, 9]]);
       }))();
     },
-    changeOrder: function changeOrder(id) {
-      this.$router.push('/order' + id);
+    subtructLimit: function subtructLimit() {
+      if (this.start > this.limit) {
+        this.start = parseInt(this.start) - parseInt(this.limit);
+        this.end = parseInt(this.end) - parseInt(this.limit);
+        return;
+      }
+
+      this.start = 0;
+      this.end = parseInt(this.limit);
+    },
+    addLimit: function addLimit() {
+      console.log(this.list.length <= parseInt(this.end) + parseInt(this.limit));
+      this.start = parseInt(this.start) + parseInt(this.limit);
+      this.end = parseInt(this.end) + parseInt(this.limit);
+    },
+    changeLimit: function changeLimit() {
+      this.end = parseInt(this.start) + parseInt(this.limit);
+    }
+  },
+  computed: {
+    listEnd: function listEnd() {
+      return parseInt(this.list.length) <= parseInt(this.end);
+    },
+    title: function title() {
+      if (this.route == "allOrders") {
+        return "All orders ";
+      } else if (this.route == "notConfirmedOrders") {
+        return "Not confirmed orders ";
+      } else if (this.route == "delayedOrders") {
+        return "Delayed orders ";
+      } else if (this.route == "todayOrders") {
+        return "Today orders ";
+      } else if (this.route == "completedOrders") {
+        return "Completed orders ";
+      } else {
+        return "New orders ";
+      }
     }
   }
 });
@@ -42696,56 +42736,80 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("section", [
-    _c("span", { staticClass: "text-lg text-gray-600" }, [
-      _vm._v("Show orders page (limit \n\t\t"),
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.limit,
-              expression: "limit"
-            }
-          ],
-          staticClass: "outline-none",
-          on: {
-            change: [
-              function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.limit = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              },
-              function($event) {
-                return _vm.getData()
+    _c("div", { staticClass: "flex justify-between" }, [
+      _c("span", { staticClass: "text-lg text-gray-600" }, [
+        _vm._v(_vm._s(_vm.title) + " (limit \n\t\t\t"),
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.limit,
+                expression: "limit"
               }
-            ]
-          }
-        },
-        [
-          _c("option", { attrs: { selected: "" }, domProps: { value: 10 } }, [
-            _vm._v("10")
-          ]),
-          _vm._v(" "),
-          _c("option", { domProps: { value: 50 } }, [_vm._v("50")]),
-          _vm._v(" "),
-          _c("option", { domProps: { value: 70 } }, [_vm._v("70")]),
-          _vm._v(" "),
-          _c("option", { domProps: { value: 100 } }, [_vm._v("100")]),
-          _vm._v(" "),
-          _c("option", { domProps: { value: 1000 } }, [_vm._v("All")])
-        ]
-      ),
-      _vm._v(" \n\t)")
+            ],
+            staticClass: "outline-none",
+            on: {
+              change: [
+                function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.limit = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                },
+                function($event) {
+                  return _vm.changeLimit()
+                }
+              ]
+            }
+          },
+          [
+            _c("option", { attrs: { selected: "" }, domProps: { value: 10 } }, [
+              _vm._v("10")
+            ]),
+            _vm._v(" "),
+            _c("option", { domProps: { value: 50 } }, [_vm._v("50")]),
+            _vm._v(" "),
+            _c("option", { domProps: { value: 70 } }, [_vm._v("70")]),
+            _vm._v(" "),
+            _c("option", { domProps: { value: 100 } }, [_vm._v("100")])
+          ]
+        ),
+        _vm._v(" \n\t\t ) from total " + _vm._s(_vm.list.length))
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "flex" }, [
+        _c(
+          "button",
+          {
+            staticClass:
+              "shadow bg-gray-100 hover:bg-indigo-600 hover:text-white focus:shadow-outline focus:outline-none text-gray-500 font-bold py-2 px-4 rounded",
+            attrs: { disabled: _vm.start == 0 },
+            on: { click: _vm.subtructLimit }
+          },
+          [_vm._v("previouse " + _vm._s(_vm.limit))]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass:
+              "ml-4 shadow bg-gray-100 hover:bg-indigo-600 hover:text-white focus:shadow-outline focus:outline-none text-gray-500 font-bold py-2 px-4 rounded",
+            attrs: { disabled: _vm.listEnd },
+            on: { click: _vm.addLimit }
+          },
+          [_vm._v("next " + _vm._s(_vm.limit))]
+        )
+      ])
     ]),
     _vm._v(" "),
     _c(
@@ -42841,6 +42905,14 @@ var render = function() {
                                   _vm._v(" "),
                                   _c(
                                     "option",
+                                    {
+                                      domProps: { value: "notConfirmedOrders" }
+                                    },
+                                    [_vm._v("Not confirmed yet")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "option",
                                     { domProps: { value: "delayedOrders" } },
                                     [_vm._v("Delayed orders")]
                                   ),
@@ -42874,7 +42946,10 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "tbody",
-                        _vm._l(_vm.list, function(order, index) {
+                        _vm._l(_vm.list.slice(_vm.start, _vm.end), function(
+                          order,
+                          index
+                        ) {
                           return _c("orderrow", {
                             key: order.id,
                             class: index % 2 == 0 ? "bg-white" : "bg-gray-100",
